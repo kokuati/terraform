@@ -1,7 +1,7 @@
 module "prod" {
     source = "../../infra"
     
-    repository_name = "saude-tv-api-getway"
+    repository_name = "saude-tv-api"
     roleIAM = "production"
     profile = "production"
     environment = "production"

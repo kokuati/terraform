@@ -13,7 +13,7 @@ module "ecs" {
 }
 
 resource "aws_ecs_task_definition" "API-Getway" {
-  family                   = "API-Getway"
+  family                   = "saude-tv-api"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = 512
@@ -23,14 +23,14 @@ resource "aws_ecs_task_definition" "API-Getway" {
     [
       {
         "name"      = var.environment
-        "image"     = "243014803482.dkr.ecr.us-east-1.amazonaws.com/saude-tv-api-getway"
+        "image"     = "243014803482.dkr.ecr.us-east-1.amazonaws.com/saude-tv-api"
         "cpu"       = 512
         "memory"    = 1024
         "essential" = true
         "portMappings" = [
           {
-            "containerPort" = 80
-            "hostPort"      = 80
+            "containerPort" = 3000
+            "hostPort"      = 3000
           }
         ]
       }
@@ -39,7 +39,7 @@ resource "aws_ecs_task_definition" "API-Getway" {
 }
 
 resource "aws_ecs_service" "API-Getway" {
-  name            = "API-Getway"
+  name            = "saude-tv-api"
   cluster         = module.ecs.cluster_id
   task_definition = aws_ecs_task_definition.API-Getway.arn
   desired_count   = 3
@@ -47,7 +47,7 @@ resource "aws_ecs_service" "API-Getway" {
   load_balancer {
     target_group_arn = aws_lb_target_group.target.arn
     container_name   = var.environment
-    container_port   = 80
+    container_port   = 3000
   }
 
   network_configuration {

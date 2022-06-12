@@ -23,6 +23,19 @@ resource "aws_lb_target_group" "target" {
   vpc_id      = module.vpc.vpc_id
 }
 
+resource "aws_acm_certificate" "cert" {
+  domain_name       = "api.saudetvpainel.com.br"
+  validation_method = "DNS"
+
+  tags = {
+    Environment = "test"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
 output "IP" {
-    value = aws_lb.alb.dns_name
+  value = aws_lb.alb.dns_name
 }
