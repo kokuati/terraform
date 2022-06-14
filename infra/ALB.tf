@@ -7,7 +7,7 @@ resource "aws_lb" "alb" {
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.alb.arn
   port              = "80"
-  protocol          = "HTTP"
+  protocol          = "HTTPS"
 
   default_action {
     type             = "forward"
@@ -21,19 +21,6 @@ resource "aws_lb_target_group" "target" {
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = module.vpc.vpc_id
-}
-
-resource "aws_acm_certificate" "cert" {
-  domain_name       = "api.saudetvpainel.com.br"
-  validation_method = "DNS"
-
-  tags = {
-    Environment = "test"
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 output "IP" {
